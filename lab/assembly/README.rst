@@ -24,7 +24,7 @@ The ``data`` directory contains the ``add_values`` function with C syntax ``exte
 1) Load the first 32-bit value from the address in ``X0`` to ``W3``.
 2) Load the second 32-bit value from the address in ``X1`` into ``W4``.
 3) Add the 32-bit values in ``W3`` and ``W4`` and write the result to ``W5``.
-4) Store the resulting data from ``W5`` to memory using the address in ``X5``.
+4) Store the resulting data from ``W5`` to memory using the address in ``X2``.
 
 .. admonition:: Tasks
 
