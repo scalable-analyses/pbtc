@@ -13,8 +13,8 @@ The driver also calls the unfinished functions ``copy_asm_0`` and ``copy_asm_1``
 
 .. admonition:: Tasks
 
-  1. Implement the functions ``copy_asm_0`` using only base instructions. The function should have the same functionality as its C counterpart.
-  2. Implement the functions ``copy_asm_1`` using only base instructions. The function should have the same functionality as its C counterpart.
+  1. Implement the function ``copy_asm_0`` using only base instructions. The function should have the same functionality as its C counterpart.
+  2. Implement the function ``copy_asm_1`` using only base instructions. The function should have the same functionality as its C counterpart.
 
 Instruction Throughput and Latency
 ----------------------------------
