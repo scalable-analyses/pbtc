@@ -9,12 +9,12 @@ extern "C" {
                  int32_t const * __restrict a,
                  int32_t       * __restrict b );
 
-  void copy_asm_0( int32_t const * a,
-                   int32_t       * b );
+  void copy_asm_0( int32_t const * __restrict a,
+                   int32_t       * __restrict b );
 
-  void copy_asm_1( int64_t         n,
-                   int32_t const * a,
-                   int32_t       * b );
+  void copy_asm_1( int64_t                    n,
+                   int32_t const * __restrict a,
+                   int32_t       * __restrict b );
 }
 
 void init( int64_t   n,
