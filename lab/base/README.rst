@@ -16,10 +16,10 @@ The driver also calls the unfinished functions ``copy_asm_0`` and ``copy_asm_1``
   1. Implement the function ``copy_asm_0`` using only base instructions. The function should have the same functionality as its C counterpart.
   2. Implement the function ``copy_asm_1`` using only base instructions. The function should have the same functionality as its C counterpart.
 
-Instruction Throughput and Latency
-----------------------------------
+Execution Throughput and Latency
+--------------------------------
 
 .. admonition:: Tasks
 
-  1. Microbenchmark the instruction throughput of `ADD (shifted register) <https://developer.arm.com/documentation/ddi0602/2025-03/Base-Instructions/ADD--shifted-register---Add-optionally-shifted-register->`__ and `MUL <https://developer.arm.com/documentation/ddi0602/2025-03/Base-Instructions/MUL--Multiply--an-alias-of-MADD->`__.
-  2. Microbenchmark the instruction latency of ADD (shifted register) and MUL.
+  1. Microbenchmark the execution throughput of `ADD (shifted register) <https://developer.arm.com/documentation/ddi0602/2025-03/Base-Instructions/ADD--shifted-register---Add-optionally-shifted-register->`__ and `MUL <https://developer.arm.com/documentation/ddi0602/2025-03/Base-Instructions/MUL--Multiply--an-alias-of-MADD->`__.
+  2. Microbenchmark the execution latency of ADD (shifted register) and MUL.
