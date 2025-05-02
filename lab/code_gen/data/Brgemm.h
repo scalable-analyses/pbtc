@@ -26,6 +26,9 @@ class mini_jit::Brgemm {
    * @param n number of columns in B and C.
    * @param k number of columns in A and rows in B.
    * @param br_size batch-reduce size.
+   * @param trans_a 0 if A is stored in column-major order, 1 if A is stored in row-major order.
+   * @param trans_b 0 if B is stored in column-major order, 1 if B is stored in row-major order.
+   * @param trans_c 0 if C is stored in column-major order, 1 if C is stored in row-major order.
    * @param dtype data type of the matrices.
    * @return error_t::success on success, another error_t value otherwise.
    **/
@@ -33,6 +36,9 @@ class mini_jit::Brgemm {
                     uint32_t n,
                     uint32_t k,
                     uint32_t br_size,
+                    uint32_t trans_a,
+                    uint32_t trans_b,
+                    uint32_t trans_c,
                     dtype_t  dtype );
 
 

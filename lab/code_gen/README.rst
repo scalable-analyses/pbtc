@@ -13,6 +13,9 @@ Use the ``generate`` function as a common entry point for all BRGEMM code genera
    * @param n number of columns in B and C.
    * @param k number of columns in A and rows in B.
    * @param br_size batch-reduce size.
+   * @param trans_a 0 if A is stored in column-major order, 1 if A is stored in row-major order.
+   * @param trans_b 0 if B is stored in column-major order, 1 if B is stored in row-major order.
+   * @param trans_c 0 if C is stored in column-major order, 1 if C is stored in row-major order.
    * @param dtype data type of the matrices.
    * @return error_t::success on success, another error_t value otherwise.
    **/
@@ -20,6 +23,9 @@ Use the ``generate`` function as a common entry point for all BRGEMM code genera
                     uint32_t n,
                     uint32_t k,
                     uint32_t br_size,
+                    uint32_t trans_a,
+                    uint32_t trans_b,
+                    uint32_t trans_c,
                     dtype_t  dtype );
 
 All generated kernels have the same function signature and can be obtained by calling the ``get_kernel`` function:
@@ -59,7 +65,7 @@ This section develops software that can generate a microkernel and a loop over t
 
 .. admonition:: Tasks
 
-   1. Start implementing the ``generate`` function. Support only the single setting of an FP32 Neon microkernel that computes C+=AB for M=16, N=6, and K=1.
+   1. Start implementing the ``generate`` function. Support only the single setting of an FP32 Neon microkernel that computes C+=AB for column-major matrices and M=16, N=6, and K=1.
       Return an appropriate error code if the parameters of the function differ from this setting.
    
    2. Add support for the ``k`` parameter by generating a K loop around the microkernel.
