@@ -89,7 +89,7 @@ Specifically, support should include at least all M-N-K combinations for the fol
 
    3. Verify the kernel generation in cases where lda>M, ldb>K or ldc>M.
 
-   4. Benchmark the performance of your generated kernels and report the measured performance for 1≤M≤64, 1≤N≤64, K∈[1,16,32,64,128], lda=M, ldb=K and ldc=M. Use a CSV format for output. Follow the structure of the example file `data/perf.csv <data/perf.csv>`_.
+   4. Benchmark the performance of your generated kernels and report the measured performance for 1≤M≤64, 1≤N≤64, K∈[1,16,32,64,128], lda=M, ldb=K and ldc=M. Use a CSV format for output. Follow the structure of the example file `data/perf.csv <data/perf.csv>`_. Report the arithmetic mean performance of all settings in GFLOPS.
 
 Batch-Reduce GEMM
 -----------------
@@ -102,4 +102,4 @@ This section extends the code generation with support for a batch-reduce dimensi
 
   2. Verify your generated kernels against a reference implementation.
 
-  3. Benchmark the performance of your generated kernels and report the measured performance for 1≤M≤64, 1≤N≤64, K∈[1,16,32,64,128], br_size=16, br_stride_a=M*K, br_stride_b=K*N, lda=M, ldb=K, and ldc=M.
+  3. Benchmark the performance of your generated kernels and report the measured performance for 1≤M≤64, 1≤N≤64, K∈[1,16,32,64,128], br_size=16, br_stride_a=M*K, br_stride_b=K*N, lda=M, ldb=K, and ldc=M. Report the arithmetic mean performance of all settings in GFLOPS.
