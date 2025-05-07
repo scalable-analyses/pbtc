@@ -83,7 +83,7 @@ Specifically, support should include at least all M-N-K combinations for the fol
 
 .. admonition:: Tasks
 
-   1. Extend the implementation of the ``generate`` function to support all M-N-K combinations for C+=AB as specified above.
+   1. Extend the implementation of the ``generate`` function to support all M-N-K combinations for C+=AB as specified above. Assume that all matrices are in column-major format.
 
    2. Verify your kernel generation by comparing to a reference implementation for 1≤M≤64, 1≤N≤64 and K∈[1,16,32,64,128], and by setting lda=M, ldb=K, ldc=M.
 
@@ -98,7 +98,7 @@ This section extends the code generation with support for a batch-reduce dimensi
 
 .. admonition:: Tasks
 
-  1. Extend the implementation of the ``generate`` function to support batch-reduce GEMMs: C+=∑AᵢBᵢ.
+  1. Extend the implementation of the ``generate`` function to support batch-reduce GEMMs: C+=∑AᵢBᵢ. Assume that all matrices are in column-major format.
 
   2. Verify your generated kernels against a reference implementation.
 
