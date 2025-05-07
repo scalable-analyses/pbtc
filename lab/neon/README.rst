@@ -28,19 +28,20 @@ The microkernel uses a 16x6 accumulator block and is wrapped in the ``matmul_16_
 .. code-block:: C
 
    /**
-    * @param a pointer to column-major matrix A.
-    * @param b pointer to column-major matrix B.
-    * @param c pointer to column-major matrix C.
-    * @param lda leading dimension of A.
-    * @param ldb leading dimension of B.
-    * @param ldc leading dimension of C.
+    * @brief GEMM that computes: C+=AB.
+    * @param a    Pointer to column-major matrix A.
+    * @param b    Pointer to column-major matrix B.
+    * @param c    Pointer to column-major matrix C.
+    * @param ld_a Leading dimension of A.
+    * @param ld_b Leading dimension of B.
+    * @param ld_c Leading dimension of C.
     **/
    void matmul_16_6_1( float   const * a,
                        float   const * b,
                        float         * c,
-                       int64_t         lda,
-                       int64_t         ldb,
-                       int64_t         ldc );
+                       int64_t         ld_a,
+                       int64_t         ld_b,
+                       int64_t         ld_c );
 
 .. admonition:: Tasks
 
@@ -58,57 +59,60 @@ We start by adding a loop over K and writing an extended kernel with the followi
 .. code-block:: C
 
    /**
-    * @param a pointer to column-major matrix A.
-    * @param b pointer to column-major matrix B.
-    * @param c pointer to column-major matrix C.
-    * @param lda leading dimension of A.
-    * @param ldb leading dimension of B.
-    * @param ldc leading dimension of C.
+    * @brief GEMM that computes: C+=AB.
+    * @param a   Pointer to column-major matrix A.
+    * @param b   Pointer to column-major matrix B.
+    * @param c   Pointer to column-major matrix C.
+    * @param ld_a Leading dimension of A.
+    * @param ld_b Leading dimension of B.
+    * @param ld_c Leading dimension of C.
     **/
    void matmul_16_6_64( float   const * a,
                         float   const * b,
                         float         * c,
-                        int64_t         lda,
-                        int64_t         ldb,
-                        int64_t         ldc );
+                        int64_t         ld_a,
+                        int64_t         ld_b,
+                        int64_t         ld_c );
 
 Next, we add a loop over M to implement:
 
 .. code-block:: C
 
    /**
-    * @param a pointer to column-major matrix A.
-    * @param b pointer to column-major matrix B.
-    * @param c pointer to column-major matrix C.
-    * @param lda leading dimension of A.
-    * @param ldb leading dimension of B.
-    * @param ldc leading dimension of C.
+    * @brief GEMM that computes: C+=AB.
+    * @param a    Pointer to column-major matrix A.
+    * @param b    Pointer to column-major matrix B.
+    * @param c    Pointer to column-major matrix C.
+    * @param ld_a Leading dimension of A.
+    * @param ld_b Leading dimension of B.
+    * @param ld_c Leading dimension of C.
     **/
    void matmul_64_6_64( float   const * a,
                         float   const * b,
                         float         * c,
-                        int64_t         lda,
-                        int64_t         ldb,
-                        int64_t         ldc );
+                        int64_t         ld_a,
+                        int64_t         ld_b,
+                        int64_t         ld_c );
 
 Finally, we add a loop over N to implement:
 
 .. code-block:: C
 
    /**
-    * @param a pointer to column-major matrix A.
-    * @param b pointer to column-major matrix B.
-    * @param c pointer to column-major matrix C.
-    * @param lda leading dimension of A.
-    * @param ldb leading dimension of B.
-    * @param ldc leading dimension of C.
+    * @brief GEMM that computes: C+=AB.
+    * @param a    Pointer to column-major matrix A.
+    * @param b    Pointer to column-major matrix B.
+    * @param c    Pointer to column-major matrix C.
+    * @param ld_a Leading dimension of A.
+    * @param ld_b Leading dimension of B.
+    * @param ld_c Leading dimension of C.
     **/
    void matmul_64_48_64( float   const * a,
                          float   const * b,
                          float         * c,
-                         int64_t         lda,
-                         int64_t         ldb,
-                         int64_t         ldc );
+                         int64_t         ld_a,
+                         int64_t         ld_b,
+                         int64_t         ld_c );
 
 .. admonition:: Tasks
 
@@ -132,38 +136,40 @@ The first kernel has the following function signature:
 .. code-block:: C
 
    /**
-    * @param a pointer to column-major matrix A.
-    * @param b pointer to column-major matrix B.
-    * @param c pointer to column-major matrix C.
-    * @param lda leading dimension of A.
-    * @param ldb leading dimension of B.
-    * @param ldc leading dimension of C.
+    * @brief GEMM that computes: C+=AB.
+    * @param a    Pointer to column-major matrix A.
+    * @param b    Pointer to column-major matrix B.
+    * @param c    Pointer to column-major matrix C.
+    * @param ld_a Leading dimension of A.
+    * @param ld_b Leading dimension of B.
+    * @param ld_c Leading dimension of C.
     **/
    void matmul_14_6_64( float   const * a,
                         float   const * b,
                         float         * c,
-                        int64_t         lda,
-                        int64_t         ldb,
-                        int64_t         ldc );
+                        int64_t         ld_a,
+                        int64_t         ld_b,
+                        int64_t         ld_c );
 
 The second kernel has this function signature:
 
 .. code-block:: C
 
    /**
-    * @param a pointer to column-major matrix A.
-    * @param b pointer to column-major matrix B.
-    * @param c pointer to column-major matrix C.
-    * @param lda leading dimension of A.
-    * @param ldb leading dimension of B.
-    * @param ldc leading dimension of C.
+    * @brief GEMM that computes: C+=AB.
+    * @param a    Pointer to column-major matrix A.
+    * @param b    Pointer to column-major matrix B.
+    * @param c    Pointer to column-major matrix C.
+    * @param ld_a Leading dimension of A.
+    * @param ld_b Leading dimension of B.
+    * @param ld_c Leading dimension of C.
     **/
    void matmul_15_6_64( float   const * a,
                         float   const * b,
                         float         * c,
-                        int64_t         lda,
-                        int64_t         ldb,
-                        int64_t         ldc );
+                        int64_t         ld_a,
+                        int64_t         ld_b,
+                        int64_t         ld_c );
 
 .. admonition:: Tasks
 
@@ -183,19 +189,20 @@ The kernel has the following function signature:
 .. code-block:: C
 
    /**
-    * @param a pointer to column-major matrix A.
-    * @param b pointer to column-major matrix B.
-    * @param c pointer to column-major matrix C.
-    * @param lda leading dimension of A.
-    * @param ldb leading dimension of B.
-    * @param ldc leading dimension of C.
+    * @brief GEMM that computes: C+=AB.
+    * @param a    Pointer to column-major matrix A.
+    * @param b    Pointer to column-major matrix B.
+    * @param c    Pointer to column-major matrix C.
+    * @param ld_a Leading dimension of A.
+    * @param ld_b Leading dimension of B.
+    * @param ld_c Leading dimension of C.
     **/
    void matmul_64_64_64( float   const * a,
                          float   const * b,
                          float         * c,
-                         int64_t         lda,
-                         int64_t         ldb,
-                         int64_t         ldc );
+                         int64_t         ld_a,
+                         int64_t         ld_b,
+                         int64_t         ld_c );
 
 .. admonition:: Tasks
 
@@ -213,7 +220,7 @@ The kernel has the following function signature:
 .. code-block:: C
 
    /**
-    * @brief Batch-reduce GEMM: computes: C+=sum(Ai*Bi) over a batch.
+    * @brief Batch-reduce GEMM that computes: C+=sum(Ai*Bi) over a batch.
     * @param a           Pointer to first of a batch of column-major A matrices.
     * @param b           Pointer to first of a batch of column-major B matrices.
     * @param c           Pointer to column-major C matrix.
@@ -226,9 +233,9 @@ The kernel has the following function signature:
    void matmul_64_48_64_16( float   const * a,
                             float   const * b,
                             float         * c,
-                            int64_t         lda,
-                            int64_t         ldb,
-                            int64_t         ldc,
+                            int64_t         ld_a,
+                            int64_t         ld_b,
+                            int64_t         ld_c,
                             int64_t         br_stride_a,
                             int64_t         br_stride_b );
 
