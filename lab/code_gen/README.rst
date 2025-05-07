@@ -35,21 +35,21 @@ All generated kernels have the same function signature and can be obtained by ca
   /*
    * Kernel type.
    * The kernel is a function that takes the following parameters:
-   * - a: pointer to first column-major A matrix.
-   * - b: pointer to first column-major B matrix.
-   * - c: pointer to first column-major C matrix.
-   * - lda: leading dimension of A.
-   * - ldb: leading dimension of B.
-   * - ldc: leading dimension of C.
-   * - br_stride_a: stride between two A matrices (in elements, not bytes).
-   * - br_stride_b: stride between two B matrices (in elements, not bytes).
+   * - a: Pointer to first of a batch of A matrices.
+   * - b: Pointer to first of a batch of B matrices.
+   * - c: Pointer to C matrix.
+   * - ld_a: Leading dimension of A.
+   * - ld_b: Leading dimension of B.
+   * - ld_c: Leading dimension of C.
+   * - br_stride_a: Stride (in elements, not bytes) between A matrices.
+   * - br_stride_b: Stride (in elements, not bytes) between B matrices.
    */
   using kernel_t = void (*)( void    const * a,
                              void    const * b,
                              void          * c,
-                             int64_t         lda,
-                             int64_t         ldb,
-                             int64_t         ldc,
+                             int64_t         ld_a,
+                             int64_t         ld_b,
+                             int64_t         ld_c,
                              int64_t         br_stride_a,
                              int64_t         br_stride_b );
 
@@ -71,3 +71,35 @@ This section develops software that can generate a microkernel and a loop over t
    2. Add support for the ``k`` parameter by generating a K loop around the microkernel.
 
    3. Test the kernel generation. Report performance in GFLOPS.
+
+GEMM
+----
+This section extends the code generation software by supporting many choices for the dimensions M, N and K.
+Specifically, support should include at least all M-N-K combinations for the following ranges:
+
+* 1≤M≤1024
+* 1≤N≤1024
+* 1≤K≤2048
+
+.. admonition:: Tasks
+
+   1. Extend the implementation of the ``generate`` function to support all M-N-K combinations for C+=AB as specified above.
+
+   2. Verify your kernel generation by comparing to a reference implementation for 1≤M≤64, 1≤N≤64 and K∈[1,16,32,64,128], and by setting lda=M, ldb=K, ldc=M.
+
+   3. Verify the kernel generation in cases where lda>M, ldb>K or ldc>M.
+
+   4. Benchmark the performance of your generated kernels and report the measured performance for 1≤M≤64, 1≤N≤64, K∈[1,16,32,64,128], lda=M, ldb=K and ldc=M. Use a CSV format for output. Follow the structure of the example file `data/perf.csv <data/perf.csv>`_.
+
+Batch-Reduce GEMM
+-----------------
+
+This section extends the code generation with support for a batch-reduce dimension. We assume that 1≤br_size≤1024.
+
+.. admonition:: Tasks
+
+  1. Extend the implementation of the ``generate`` function to support batch-reduce GEMMs: C+=∑AᵢBᵢ.
+
+  2. Verify your generated kernels against a reference implementation.
+
+  3. Benchmark the performance of your generated kernels and report the measured performance for 1≤M≤64, 1≤N≤64, K∈[1,16,32,64,128], br_size=16, br_stride_a=M*K, br_stride_b=K*N, lda=M, ldb=K, and ldc=M.

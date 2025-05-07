@@ -203,3 +203,42 @@ The kernel has the following function signature:
       Wrap your kernel in the ``matmul_64_64_64`` function.
 
    2. Test and optimize the kernel. Report your performance in GFLOPS.
+
+Batch-Reduce GEMM
+-----------------
+This section considers a batch-reduce matrix-matrix multiplication that has a fourth dimension in addition to the known M, N, and K dimensions.
+The kernel takes as input a batch of matrices Aᵢ and Bᵢ and computes C+=∑AᵢBᵢ.
+The kernel has the following function signature:
+
+.. code-block:: C
+
+   /**
+    * @brief Batch-reduce GEMM: computes: C+=sum(Ai*Bi) over a batch.
+    * @param a           Pointer to first of a batch of column-major A matrices.
+    * @param b           Pointer to first of a batch of column-major B matrices.
+    * @param c           Pointer to column-major C matrix.
+    * @param ld_a        Leading dimension of A.
+    * @param ld_b        Leading dimension of B.
+    * @param ld_c        Leading dimension of C.
+    * @param br_stride_a Stride (in elements, not bytes) between A matrices.
+    * @param br_stride_b Stride (in elements, not bytes) between B matrices.
+    **/
+   void matmul_64_48_64_16( float   const * a,
+                            float   const * b,
+                            float         * c,
+                            int64_t         lda,
+                            int64_t         ldb,
+                            int64_t         ldc,
+                            int64_t         br_stride_a,
+                            int64_t         br_stride_b );
+
+The parameter ``br_stride_a`` specifies the stride between two consecutive Aᵢ matrices.
+The parameter ``br_stride_b`` specifies the stride between two consecutive Bᵢ matrices.
+For example, if ``br_stride_a`` is 4096, the two matrices A₀ and A₁ are 4096 FP32 values or  16 KiB apart.
+
+.. admonition:: Tasks
+
+   1. Implement a kernel that computes C+=∑AᵢBᵢ for M=64, N=48 and K=64 and a batch-reduce dimension size of 16.
+      Wrap your kernel in the ``matmul_64_48_64_16`` function.
+
+   2. Test and optimize the kernel. Report your performance in GFLOPS.

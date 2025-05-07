@@ -45,21 +45,21 @@ class mini_jit::Brgemm {
   /*
    * Kernel type.
    * The kernel is a function that takes the following parameters:
-   * - a: pointer to first column-major A matrix.
-   * - b: pointer to first column-major B matrix.
-   * - c: pointer to first column-major C matrix.
-   * - lda: leading dimension of A.
-   * - ldb: leading dimension of B.
-   * - ldc: leading dimension of C.
-   * - br_stride_a: stride between two A matrices (in elements, not bytes).
-   * - br_stride_b: stride between two B matrices (in elements, not bytes).
+   * - a: Pointer to first of a batch of A matrices.
+   * - b: Pointer to first of a batch of B matrices.
+   * - c: Pointer to C matrix.
+   * - ld_a: Leading dimension of A.
+   * - ld_b: Leading dimension of B.
+   * - ld_c: Leading dimension of C.
+   * - br_stride_a: Stride (in elements, not bytes) between A matrices.
+   * - br_stride_b: Stride (in elements, not bytes) between B matrices.
    */
   using kernel_t = void (*)( void    const * a,
                              void    const * b,
                              void          * c,
-                             int64_t         lda,
-                             int64_t         ldb,
-                             int64_t         ldc,
+                             int64_t         ld_a,
+                             int64_t         ld_b,
+                             int64_t         ld_c,
                              int64_t         br_stride_a,
                              int64_t         br_stride_b );
 
