@@ -23,7 +23,7 @@ Microkernel
 -----------
 
 This section implements an FP32 Neon microkernel for matrix-matrix multiplications.
-The microkernel uses a 16x6 accumulator block and is wrapped in the ``matmul_16_6_1`` function with the following C function signature:
+The microkernel uses a 16x6 accumulator and is wrapped in the ``matmul_16_6_1`` function with the following C function signature:
 
 .. code-block:: C
 
@@ -60,9 +60,9 @@ We start by adding a loop over K and writing an extended kernel with the followi
 
    /**
     * @brief GEMM that computes: C+=AB.
-    * @param a   Pointer to column-major matrix A.
-    * @param b   Pointer to column-major matrix B.
-    * @param c   Pointer to column-major matrix C.
+    * @param a    Pointer to column-major matrix A.
+    * @param b    Pointer to column-major matrix B.
+    * @param c    Pointer to column-major matrix C.
     * @param ld_a Leading dimension of A.
     * @param ld_b Leading dimension of B.
     * @param ld_c Leading dimension of C.
@@ -181,9 +181,9 @@ The second kernel has this function signature:
 
    3. Test and optimize the kernels. Report your performance in GFLOPS.
 
-Accumulator Block Shapes
-------------------------
-This section considers a matrix-matrix multiplication where a high-performance implementation may require accumulator blocks with different shapes.
+Accumulator Shapes
+------------------
+This section considers a matrix-matrix multiplication where a high-performance implementation may require accumulators with different shapes.
 The kernel has the following function signature:
 
 .. code-block:: C
@@ -249,3 +249,28 @@ For example, if ``br_stride_a`` is 4096, the two matrices A₀ and A₁ are 4096
       Wrap your kernel in the ``matmul_64_48_64_16`` function.
 
    2. Test and optimize the kernel. Report your performance in GFLOPS.
+
+Transposition
+-------------
+This section develops a kernel that performs the identity operation on the elements of an 8x8 column-major matrix A and stores the result in row-major format in matrix B.
+In other words, the kernel transposes the 8x8 matrix: B:=Aᵀ.
+The kernel has the following signature:
+
+.. code-block:: C
+
+  /**
+   * @brief Identity primitive that transposes an 8x8 matrix.
+   * @param a    Pointer to column-major matrix A.
+   * @param b    Pointer to row-major matrix B.
+   * @param ld_a Leading dimension of A.
+   * @param ld_b Leading dimension of B.
+   **/
+  void trans_neon_8_8( float   const * a,
+                       float         * b,
+                       int64_t         ld_a,
+                       int64_t         ld_b );
+
+.. admonition:: Tasks
+
+   1. Implement a Neon kernel that transposes an 8x8 matrix: B:=Aᵀ.
+   2. Test and optimize your kernel. Report its performance in GiB/s.
