@@ -22,14 +22,14 @@ class mini_jit::Brgemm {
 
     /**
      * @brief Generate a kernel for batch-reduce matrix multiplication.
-     * @param m number of rows in A and C.
-     * @param n number of columns in B and C.
-     * @param k number of columns in A and rows in B.
-     * @param br_size batch-reduce size.
+     * @param m       Number of rows in A and C.
+     * @param n       Number of columns in B and C.
+     * @param k       Number of columns in A and rows in B.
+     * @param br_size Batch-reduce size.
      * @param trans_a 0 if A is stored in column-major order, 1 if A is stored in row-major order.
      * @param trans_b 0 if B is stored in column-major order, 1 if B is stored in row-major order.
      * @param trans_c 0 if C is stored in column-major order, 1 if C is stored in row-major order.
-     * @param dtype data type of the matrices.
+     * @param dtype   Data type of the matrices.
      * @return error_t::success on success, another error_t value otherwise.
      **/
     error_t generate( uint32_t m,
@@ -42,17 +42,17 @@ class mini_jit::Brgemm {
                       dtype_t  dtype );
 
     /*
-    * Kernel type.
-    * The kernel is a function that takes the following parameters:
-    * - a: Pointer to first of a batch of A matrices.
-    * - b: Pointer to first of a batch of B matrices.
-    * - c: Pointer to C matrix.
-    * - ld_a: Leading dimension of A.
-    * - ld_b: Leading dimension of B.
-    * - ld_c: Leading dimension of C.
-    * - br_stride_a: Stride (in elements, not bytes) between A matrices.
-    * - br_stride_b: Stride (in elements, not bytes) between B matrices.
-    */
+     * Kernel type.
+     * The kernel is a function that takes the following parameters:
+     * - a:           Pointer to first of a batch of A matrices.
+     * - b:           Pointer to first of a batch of B matrices.
+     * - c:           Pointer to C matrix.
+     * - ld_a:        Leading dimension of A.
+     * - ld_b:        Leading dimension of B.
+     * - ld_c:        Leading dimension of C.
+     * - br_stride_a: Stride (in elements, not bytes) between A matrices.
+     * - br_stride_b: Stride (in elements, not bytes) between B matrices.
+     */
     using kernel_t = void (*)( void    const * a,
                                void    const * b,
                                void          * c,
