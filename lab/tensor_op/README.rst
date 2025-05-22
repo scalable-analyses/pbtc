@@ -185,7 +185,7 @@ Performance Benchmarking
    * - strides_out
      - ( 32768, 1024,    0,    1,   32,    0 )
 
-.. admonition:: Task:
+.. admonition:: Tasks
 
    1. Benchmark the performance of your implementation for the above examples. Report the measured performance in GFLOPS.
 
