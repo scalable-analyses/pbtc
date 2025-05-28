@@ -236,7 +236,7 @@ The following high-level code example shows one way to achieve this:
       }
     }
 
-.. admonition:: Tasks
+.. admonition:: Task
 
   Implement the function ``execute_iter_parallel``, which parallelizes a binary tensor contraction in the shared memory domain.
 
