@@ -1,5 +1,8 @@
-Tensor Operation Backend
-========================
+Tensor Operations
+=================
+
+Backend
+-------
 
 This section implements a backend for binary tensor contractions and unary tensor permutations.
 The structure of the backend is outlined in the file `TensorOperation.h <data/TensorOperation.h>`_ in the ``data`` directory. 
@@ -8,7 +11,7 @@ Contractions are executed as recursive loops over small GEMM or Batch-Reduce GEM
 Permutations are executed as recursive loops over small transposition kernels.
 
 User Interface
---------------
+^^^^^^^^^^^^^^
 
 The user interface of the backend is given by the ``setup`` function that has the following signature:
 
@@ -51,7 +54,7 @@ Recursive Loops Over Primitives
 -------------------------------
 Similarly to the following code example, we can define a recursive contraction function for an arbitrary number of loops:
 
-.. code-block:: C
+.. code-block:: C++
 
     /**
      * General-purpose loop implementation featuring first and last touch operations.
@@ -98,7 +101,7 @@ Similarly to the following code example, we can define a recursive contraction f
    2. Verify your implementation against a reference implementation.
 
 Performance Benchmarking
-------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. list-table:: Tensor contraction using the GEMM primitive.
    :widths: 40 60
@@ -190,3 +193,108 @@ Performance Benchmarking
    1. Benchmark the performance of your implementation for the above examples. Report the measured performance in GFLOPS.
 
    2. Design your own setups. Which setups achieve a high performance and which setups are slow?
+
+Shared Memory Parallelization
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+In the shared memory domain, loops can be parallelized at any point within the nested loop structure.
+However, to simplify the implementation, we only parallelize the outermost loops.
+In other words, we do not parallelize loops that are nested inside sequential loops.
+
+To support an arbitrary number of parallel loops, a simple implementation could fuse them and use division and modulo operations to reconstruct the indices in the original loops.
+The following high-level code example shows one way to achieve this:
+
+.. code-block:: C++
+
+
+    /**
+     * General-purpose loop implementation featuring first and last touch operations with OMP parallelization.
+     *
+     * @param ptr_in0      Pointer to the first input tensor's data.
+     * @param ptr_in1      Pointer to the second input tensor's data (use nullptr if unary).
+     * @param ptr_out      Pointer to the output tensor's data.
+     * @param first_access True if first time accessing data of output tensor.
+     * @param last_access  True if last time accessing data of output tensor.
+     **/
+    void execute_iter_parallel( char const * ptr_in0,
+                                char const * ptr_in1,
+                                char       * ptr_out,
+                                bool         first_access,
+                                bool         last_access ) {
+    #pragma omp parallel for
+      for( int64_t l_it_all = 0; l_it_all < m_size_parallel_loops; l_it_all++ ) {
+        int64_t l_it_remaining = l_it_all;
+        for( int64_t l_id_loop = m_num_parallel_loops - 1; l_id_loop >= 0; l_id_loop-- ) {
+          // calculate loop index l_it for loop l_id_loop
+          int64_t l_it   = l_it_remaining % m_loop_sizes[l_id_loop];
+          l_it_remaining = l_it_remaining / m_loop_sizes[l_id_loop];
+
+          // derive if this is first or last access to the output block
+
+          // update pointer with strides
+        }
+        // call non parallel loops or kernel
+      }
+    }
+
+.. admonition:: Tasks
+
+  Implement the function ``execute_iter_parallel``, which parallelizes a binary tensor contraction in the shared memory domain.
+
+Optimization Passes
+-------------------
+This section employs various optimization passes to enhance the performance of tensor operations.
+Having an Intermediate Representation (IR) that allows for dimension reordering, splitting, and fusion as transformations is advantageous for implementing optimization passes.
+Passes that could use these transformations include the following:
+
+#. Dimension splitting
+#. Dimension fusion
+#. Dimension reordering
+#. Primitive identification
+#. Shared memory parallelization
+
+.. list-table:: Matrix multiplication example.
+   :widths: 40 60
+   :header-rows: 1
+
+   * - Variable
+     - Value
+   * - dim_types
+     - (    M,    N,    K )
+   * - exec_types
+     - (  Seq,  Seq,  Seq )
+   * - dim_sizes
+     - ( 1600, 1600, 1600 )
+   * - strides_in0
+     - (    1,    0, 1600 )
+   * - strides_in1
+     - (    0, 1600,    1 )
+   * - strides_out
+     - (    1, 1600,    0 )
+
+.. list-table:: Tensor contraction example.
+   :widths: 30 70
+   :header-rows: 1
+
+   * - Variable
+     - Value
+   * - dim_types
+     - (   M,    M,     N,    N,     K,    K )
+   * - exec_types
+     - ( Seq,  Seq,   Seq,  Seq,   Seq,  Seq )
+   * - dim_sizes
+     - (  64,   25,    64,   25,    64,   25 )
+   * - strides_in0
+     - (  25,    1,     0,    0, 40000, 1600 )
+   * - strides_in1
+     - (   0,    0, 40000, 1600,    25,    1 )
+   * - strides_out
+     - (  25,    1, 40000, 1600,     0,    0 )
+
+
+.. admonition:: Tasks
+
+   1. Develop an IR that supports transformations such as dimension reordering, dimension splitting and fusing dimensions.
+   2. Implement optimization passes. At a minimum, support primitive identification and shared memory parallelization.
+   3. Lower the optimized IR code to your tensor operation backend. Verify the correctness of the optimizations.
+   4. Benchmark the performance of your implementation for the above matrix multiplication and tensor contraction examples. Report the measured performance in GFLOPS.
+   5. Demonstrate the capabilities of your optimization passes using your own examples.
