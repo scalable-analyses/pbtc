@@ -298,3 +298,18 @@ Passes that could use these transformations include the following:
    3. Lower the optimized IR code to your tensor operation backend. Verify the correctness of the optimizations.
    4. Benchmark the performance of your implementation for the above matrix multiplication and tensor contraction examples. Report the measured performance in GFLOPS.
    5. Demonstrate the capabilities of your optimization passes using your own examples.
+
+Unary Operations
+----------------
+
+Unary tensor operations, such as permuting a tensor's dimensions, can be implemented using the same interface as binary operations.
+In a unary operation, all of the input tensor dimensions are present in the output tensors.
+Therefore, we use the dimension type ``dim_t::c`` for all dimensions.
+The ``execute`` function ignores the second input pointer, ``ptr_in1``, for unary tensor operations.
+Thus, we pass ``nullptr`` for unary executions.
+
+.. admonition:: Tasks
+
+   1. Extend the tensor operation backend to support unary tensor operations.
+   2. Implement primitive identification and shared memory parallelization optimization passes for unary tensor operations.
+   3. Verify the correctness of your implementation against a reference implementation.
